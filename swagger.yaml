@@ -8,7 +8,7 @@ paths:
   /users:
     get:
       description: get all known users
-      operationId: getUsers
+      operationId: getUsersData
       tags:
         - user
       responses:
