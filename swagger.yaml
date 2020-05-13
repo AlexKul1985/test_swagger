@@ -1,0 +1,102 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: dbsvc
+servers:
+  - url: http://dbsvc.dev.k8s.ok.loc
+paths:
+  /users:
+    get:
+      description: get all known users
+      operationId: getUsers
+      tags:
+        - user
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: string
+        400:
+          description: invalid query params
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /domain/{domain}/langs:
+    get:
+      description: get all languages for a domain
+      operationId: getDomainLangs
+      tags:
+        - domain
+      parameters:
+        - in: path
+          name: domain
+          description: domain name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: string
+        400:
+          description: invalid query params
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+components:
+ 
+  schemas:
+    ErrorCode:
+      type: integer
+      description: |
+        1 - unknown error, read message
+        2 - entity not found
+        3 - database error
+        4 - bad request params
+        5 - bad page request params
+        6 - bad request body
+
+    
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          $ref: "#/components/schemas/ErrorCode"
+        error_msg:
+          type: string
+
+    
